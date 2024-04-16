@@ -1,0 +1,219 @@
+[
+    {
+        "id": "0ef51b159a431bb3",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "16a76b430fcc0266",
+        "type": "http in",
+        "z": "0ef51b159a431bb3",
+        "name": "Repeated tasks",
+        "url": "/GetRepeatedTask",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 140,
+        "wires": [
+            [
+                "dfb280c20ec997ea"
+            ]
+        ]
+    },
+    {
+        "id": "dfb280c20ec997ea",
+        "type": "json-full-schema-validator",
+        "z": "0ef51b159a431bb3",
+        "name": "Validator",
+        "property": "payload",
+        "propertyType": "msg",
+        "func": "// @ts-nocheck\n{\n    \"type\": \"object\",\n    \"title\": \"taskValidation\",\n    \"properties\": {\n        \"merchant\": { \"type\": \"string\" },\n        \"taskNUmber\": { \"type\": \"number\" },\n        \"date_close\": { \"type\": \"string\" },\n        \"cam1\": { \"type\": \"number\" },\n        \"cam2\": { \"type\": \"number\" },\n        \"cam3\": { \"type\": \"number\" },\n        \"cam4\": { \"type\": \"number\" }\n    },\n    \"required\": [\"merchant\", \"taskNUmber\", \"date_close\", \"cam1\", \"cam2\", \"cam3\", \"cam4\"]\n}\n",
+        "x": 260,
+        "y": 140,
+        "wires": [
+            [
+                "c8a61b5dd5cab814",
+                "b8b99c61194be199"
+            ],
+            [
+                "889f976aa771bb59"
+            ]
+        ]
+    },
+    {
+        "id": "6c3e0f53ddf58697",
+        "type": "GSheet",
+        "z": "0ef51b159a431bb3",
+        "creds": "be71e524d64cd947",
+        "method": "append",
+        "action": "",
+        "sheet": "1E2dXt-9ZeHMb0GKaWqC-S4bo0T5E78RGvyN9d9w-a4g",
+        "cells": "Sheet1!A2",
+        "flatten": false,
+        "name": "GSheet",
+        "x": 660,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8586eba2132a0e7f",
+        "type": "inject",
+        "z": "0ef51b159a431bb3",
+        "d": true,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 880,
+        "wires": [
+            [
+                "9d95255ac426634f"
+            ]
+        ]
+    },
+    {
+        "id": "9d95255ac426634f",
+        "type": "GSheet",
+        "z": "0ef51b159a431bb3",
+        "d": true,
+        "creds": "be71e524d64cd947",
+        "method": "append",
+        "action": "",
+        "sheet": "1E2dXt-9ZeHMb0GKaWqC-S4bo0T5E78RGvyN9d9w-a4g",
+        "cells": "Sheet1!A2:D2",
+        "flatten": false,
+        "name": "",
+        "x": 330,
+        "y": 880,
+        "wires": [
+            [
+                "57de73826d5d0a73"
+            ]
+        ]
+    },
+    {
+        "id": "57de73826d5d0a73",
+        "type": "debug",
+        "z": "0ef51b159a431bb3",
+        "d": true,
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "c8a61b5dd5cab814",
+        "type": "function",
+        "z": "0ef51b159a431bb3",
+        "name": "Processing",
+        "func": "const taskHistory  = [\n    {\n        merchant: 'system5782',\n        taskNUmber : 735957,\n        date_close: \"2024-01-22 22:42:12\",\n        cam1: 0,\n        cam2: 1,\n        cam3: 0,\n        cam4: 0\n    } , \n    {\n        merchant: 'system5782',\n        taskNUmber : 734340,\n        date_close: \"2024-01-29 12:54:12\",\n        cam1: 0,\n        cam2: 0,\n        cam3: 0,\n        cam4: 1\n    }, {\n        merchant: 'system5782',\n        taskNUmber : 636330,\n        date_close: \"2024-01-25 20:12:12\",\n        cam1: 1,\n        cam2: 0,\n        cam3: 0,\n        cam4: 1\n    },\n    {\n        merchant: 'system5782',\n        taskNUmber : 356680,\n        date_close: \"2024-01-22 15:56:32\",\n        cam1: 1,\n        cam2: 1,\n        cam3: 0,\n        cam4: 0\n    },{\n        merchant: 'system1254',\n        taskNUmber : 432963,\n        date_close: \"2024-02-01 16:34:12 \",\n        cam1: 0,\n        cam2: 1,\n        cam3: 0,\n        cam4: 1\n    },\n    {\n        merchant: 'system5782',\n        taskNUmber : 356680,\n        date_close: \"2024-02-02 19:56:32\",\n        cam1: 1,\n        cam2: 1,\n        cam3: 0,\n        cam4: 1\n    }\n]\n\nconst currentDate = new Date(msg.payload.date_close);\nconst tenDaysAgo = new Date(currentDate);\ntenDaysAgo.setDate(tenDaysAgo.getDate() - 10);\n\nconst repeatedTasks = [];\n\nconst cam1 = msg.payload.cam1;\nconst cam2 = msg.payload.cam2;\nconst cam3 = msg.payload.cam3;\nconst cam4 = msg.payload.cam4;\n\nfor (const task of taskHistory) {    \n    const taskDate = new Date(task.date_close);\n    if (taskDate >= tenDaysAgo && taskDate < currentDate) {\n        repeatedTasks.push({\n            taskNUmber: task.taskNUmber,\n            date_close: task.date_close,\n            ...(task.cam1 === 1 && cam1 === 1 ? { cam1: 1 } : {}),\n            ...(task.cam2 === 1 && cam2 === 1 ? { cam2: 1 } : {}),\n            ...(task.cam3 === 1 && cam3 === 1 ? { cam3: 1 } : {}),\n            ...(task.cam4 === 1 && cam4 === 1 ? { cam4: 1 } : {})            \n        });\n    }\n}\n\nmsg.payload = repeatedTasks;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 120,
+        "wires": [
+            [
+                "1e0be959f9b30270"
+            ]
+        ]
+    },
+    {
+        "id": "889f976aa771bb59",
+        "type": "function",
+        "z": "0ef51b159a431bb3",
+        "name": "Error Report",
+        "func": "const requiredKeys = ['merchant', 'taskNUmber', 'date_close', 'cam1', 'cam2', 'cam3', 'cam4'];\nconst types = {\n    merchant: 'string',\n    taskNUmber: 'number',\n    date_close: 'string',\n    cam1: 'number',\n    cam2: 'number',\n    cam3: 'number',\n    cam4: 'number'\n};\n\nconst errors = [];\n\nfor (const key of requiredKeys) {\n    if (!msg.payload.hasOwnProperty(key)) {\n        errors.push({ error: `Missing required key: ${key}` });       \n    }\n    if (typeof msg.payload[key] !== types[key]) {\n        errors.push({ error: `Invalid data type for key ${key}, expected ${types[key]}` });      \n    }\n}\n\nmsg.payload = errors;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "4b0412243b5d18ed"
+            ]
+        ]
+    },
+    {
+        "id": "1e0be959f9b30270",
+        "type": "http response",
+        "z": "0ef51b159a431bb3",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 620,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4b0412243b5d18ed",
+        "type": "http response",
+        "z": "0ef51b159a431bb3",
+        "name": "",
+        "statusCode": "400",
+        "headers": {},
+        "x": 620,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "b8b99c61194be199",
+        "type": "function",
+        "z": "0ef51b159a431bb3",
+        "name": "GSheet Processing",
+        "func": "const taskHistory  = [\n    {\n        merchant: 'system5782',\n        taskNUmber : 735957,\n        date_close: \"2024-01-22 22:42:12\",\n        cam1: 0,\n        cam2: 1,\n        cam3: 0,\n        cam4: 0\n    } , \n    {\n        merchant: 'system5782',\n        taskNUmber : 734340,\n        date_close: \"2024-01-29 12:54:12\",\n        cam1: 0,\n        cam2: 0,\n        cam3: 0,\n        cam4: 1\n    }, {\n        merchant: 'system5782',\n        taskNUmber : 636330,\n        date_close: \"2024-01-25 20:12:12\",\n        cam1: 1,\n        cam2: 0,\n        cam3: 0,\n        cam4: 1\n    },\n    {\n        merchant: 'system5782',\n        taskNUmber : 356680,\n        date_close: \"2024-01-22 15:56:32\",\n        cam1: 1,\n        cam2: 1,\n        cam3: 0,\n        cam4: 0\n    },{\n        merchant: 'system1254',\n        taskNUmber : 432963,\n        date_close: \"2024-02-01 16:34:12 \",\n        cam1: 0,\n        cam2: 1,\n        cam3: 0,\n        cam4: 1\n    },\n    {\n        merchant: 'system5782',\n        taskNUmber : 356680,\n        date_close: \"2024-02-02 19:56:32\",\n        cam1: 1,\n        cam2: 1,\n        cam3: 0,\n        cam4: 1\n    }\n]\n\nconst currentDate = new Date(msg.payload.date_close);\nconst tenDaysAgo = new Date(currentDate);\ntenDaysAgo.setDate(tenDaysAgo.getDate() - 10);\n\nconst repeatedTasks = [];\n\nconst cam1 = msg.payload.cam1;\nconst cam2 = msg.payload.cam2;\nconst cam3 = msg.payload.cam3;\nconst cam4 = msg.payload.cam4;\n\nfor (const task of taskHistory) {    \n    const taskDate = new Date(task.date_close);\n    if (taskDate >= tenDaysAgo && taskDate < currentDate) {\n        repeatedTasks.push({\n            taskNUmber: task.taskNUmber,\n            date_close: task.date_close,\n            ...(task.cam1 === 1 && cam1 === 1 ? { cam1: 1 } : {}),\n            ...(task.cam2 === 1 && cam2 === 1 ? { cam2: 1 } : {}),\n            ...(task.cam3 === 1 && cam3 === 1 ? { cam3: 1 } : {}),\n            ...(task.cam4 === 1 && cam4 === 1 ? { cam4: 1 } : {})            \n        });\n    }\n}\n\nmsg.payload = [currentDate, msg.payload.merchant, msg.payload.taskNUmber, JSON.stringify(repeatedTasks)];\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 60,
+        "wires": [
+            [
+                "6c3e0f53ddf58697"
+            ]
+        ]
+    },
+    {
+        "id": "be71e524d64cd947",
+        "type": "gauth",
+        "name": "read-write-gsheet@bubbly-granite-420506.iam.gserviceaccount.com"
+    }
+]
